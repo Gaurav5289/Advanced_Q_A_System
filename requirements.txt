@@ -15,6 +15,3 @@ llama-parse
 sentence-transformers
 pinecone-client
 langchain-pinecone
-
-# Production Web Server
-gunicorn
