@@ -15,6 +15,5 @@ langchain_community
 # Document Processing & Vector Store
 llama-parse
 sentence-transformers
-pinecone-client
-langchain-pinecone
 torch
+chromadb
