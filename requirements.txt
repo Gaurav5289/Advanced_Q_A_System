@@ -17,3 +17,4 @@ llama-parse
 sentence-transformers
 pinecone-client
 langchain-pinecone
+torch
