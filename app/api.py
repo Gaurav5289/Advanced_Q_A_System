@@ -3,7 +3,6 @@ from .schemas import AskRequest, AskResponse
 from orchestrator.agent import ask_question
 from core.logger import get_logger
 
-# Initialize the router and logger
 router = APIRouter()
 logger = get_logger(__name__)
 
@@ -24,7 +23,5 @@ async def ask(request: AskRequest):
         return AskResponse(answer=answer)
         
     except Exception as e:
-        # Log the detailed error for debugging
         logger.error(f"An error occurred during /ask request: {e}", exc_info=True)
-        # Raise a standard 500 error to the client
         raise HTTPException(status_code=500, detail="An internal server error occurred.")

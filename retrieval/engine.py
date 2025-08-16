@@ -1,23 +1,18 @@
-# retrieval/engine.py
-from langchain.retrievers import ContextualCompressionRetriever
-from langchain_community.cross_encoders import HuggingFaceCrossEncoder
-from langchain.retrievers.document_compressors import CrossEncoderReranker
 from .vector_store import get_vector_store
 from .query_transformer import create_multi_query_retriever
 
-def create_retrieval_engine(top_k=10, rerank_top_n=3):
-    """Creates the full, advanced retrieval engine with re-ranking."""
+def create_retrieval_engine():
+    """
+    Creates a simplified retrieval engine without the memory-intensive re-ranker
+    to fit within free deployment plan limits.
+    """
     vector_store = get_vector_store()
     
-    base_retriever = vector_store.as_retriever(search_kwargs={"k": top_k})
+    # Create the base retriever that searches the vector store
+    base_retriever = vector_store.as_retriever(search_kwargs={"k": 10})
+    
+    # Use the multi-query retriever for better search results
     multi_query_retriever = create_multi_query_retriever(base_retriever)
-
-    cross_encoder_model = HuggingFaceCrossEncoder(model_name="cross-encoder/ms-marco-MiniLM-L-6-v2")
-    compressor = CrossEncoderReranker(model=cross_encoder_model, top_n=rerank_top_n)
     
-    compression_retriever = ContextualCompressionRetriever(
-        base_compressor=compressor, 
-        base_retriever=multi_query_retriever
-    )
-    
-    return compression_retriever
+    # We will return this retriever directly, skipping the heavy re-ranker
+    return multi_query_retriever

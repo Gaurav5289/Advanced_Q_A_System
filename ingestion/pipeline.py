@@ -1,11 +1,9 @@
-# ingestion/pipeline.py
-from langchain_community.vectorstores import Chroma
+from langchain_pinecone import PineconeVectorStore
 from langchain.schema import Document as LangChainDocument
 from .load import load_documents
 from .chunk import chunk_documents
 from core.llm_provider import embedding_model
-
-CHROMA_PATH = "chroma_db"
+from core.config import settings
 
 def run_ingestion_pipeline():
     llama_parse_docs = load_documents()
@@ -19,10 +17,11 @@ def run_ingestion_pipeline():
     ]
     chunked_docs = chunk_documents(docs_to_chunk)
     
-    print(f"Creating/updating local vector store at: {CHROMA_PATH}")
-    vector_store = Chroma.from_documents(
+    print(f"Creating embeddings and loading to Pinecone index '{settings.PINECONE_INDEX_NAME}'...")
+    PineconeVectorStore.from_documents(
         documents=chunked_docs,
         embedding=embedding_model,
-        persist_directory=CHROMA_PATH
+        index_name=settings.PINECONE_INDEX_NAME
     )
-    print("\n✅ Ingestion to local ChromaDB complete!")
+    
+    print("\n✅ Ingestion to Pinecone complete!")

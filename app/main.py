@@ -7,7 +7,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Include the API router
 app.include_router(api_router, prefix="/api")
 
 @app.get("/", tags=["Root"])

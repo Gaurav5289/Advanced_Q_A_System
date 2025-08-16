@@ -1,9 +1,10 @@
 # Environment variables and secrets
 .env
 
-# Local databases (no longer used, but good practice)
+# Local databases
 chroma_db/
 
 # Python cache files
 __pycache__/
 *.pyc
+.pytest_cache/

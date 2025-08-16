@@ -6,7 +6,7 @@ def chunk_documents(docs: list):
         chunk_size=1000,
         chunk_overlap=200,
         length_function=len,
-        add_start_index=True, # Helps with source tracking
+        add_start_index=True,
     )
     
     print("Chunking documents...")
